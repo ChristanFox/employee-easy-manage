@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ChristanFox/employee-easy-manage#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "inquirer": "^8.2.2",
     "mysql2": "^2.3.3"
   }
