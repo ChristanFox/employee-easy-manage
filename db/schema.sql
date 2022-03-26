@@ -17,7 +17,7 @@ CREATE TABLE roles (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE employees (
+CREATE TABLE employee (
     id INTEGER NOT NULL AUTO_INCREMENT,
     firstname VARCHAR(30),
     lastname VARCHAR(30),
