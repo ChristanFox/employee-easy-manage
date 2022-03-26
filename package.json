@@ -4,7 +4,8 @@
   "description": "npm node MYSQL inquirer bycrypt NODE MYSQL 2 dotenv",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/ChristanFox/employee-easy-manage#readme",
   "dependencies": {
+    "ascii-art-table": "^1.0.1",
     "bcrypt": "^5.0.1",
     "console.table": "^0.10.0",
     "dotenv": "^16.0.0",
@@ -24,5 +26,6 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node": "^17.7.1"
-  }
+  },
+  "keywords": []
 }
