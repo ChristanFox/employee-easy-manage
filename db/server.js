@@ -27,7 +27,7 @@ class company_db {
 
     // List all the managers
     allManagers(employeeId) {
-        return this .connection.promis().query(
+        return this .connection.promise().query(
             'SELECT id, first_name FROM employee Where id != ?',
             employeeId
         );
@@ -47,4 +47,21 @@ class company_db {
             role
         );
     }
+
+    // List all departments
+    allDepartments() {
+        return this.connection.promise().query(
+            'SELECT department.id, department.name FROM department;'
+        );
+    }
+
+    // Create new department
+    createDepartment(department) {
+        return this.connection.promise().query(
+            'INSERT INTO department SET ?',
+            department
+        );
+    }
 }
+
+module.exports = new company_db(connection);
