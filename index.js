@@ -469,29 +469,11 @@ function deleteEmployee() {
     });
 }
 
-function removeRole() {
-    db.currentEmployees()
-        .then(([rows]) => {
-            let employees = rows;
-            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
-                name: `${first_name} ${last_name}`,
-                value: id
-            }));
-
-            inquirer.prompt([
-                {
-                    type: "list",
-                    name: "employeeId",
-                    message: "Which employee's role do you want to update?",
-                    choices: employeeChoices
-                }
-            ])
-                .then(res => {
-                    let employeeId = res.employeeId;
-                    db.allRoles()
-                        .then(([rows]) => {
+function deleteRole() {
+    db.allRoles()
+                 .then(([rows]) => {
                             let roles = rows;
-                            const roleChoices = roles.map(({ id, title }) => ({
+                            const roleChoices = roles.map(({id, title}) => ({
                                 name: title,
                                 value: id
                             }));
@@ -500,15 +482,36 @@ function removeRole() {
                                 {
                                     type: "list",
                                     name: "roleId",
-                                    message: "What's the new role of this employee?",
+                                    message: 'Which role would you like to remove?',
                                     choices: roleChoices
                                 }
                             ])
-                                .then(res => db.removeRole(roles, res.roleId))
-                                .then(() => console.log("Employee's role is updated"))
+                                .then(res => db.deleteRole(res.roleId))
+                                .then(() => console.log('Role was sucessfully deleted'))
                                 .then(() => mainPrompt())
-                        });
-                });
+        })
+}
+
+function deleteDepartment() {
+    db.allDepartments()
+                 .then(([rows]) => {
+                            let departments = rows;
+                            const departmentChoices = departments.map(({id, name}) => ({
+                                name: name,
+                                value: id
+                            }));
+
+                            inquirer.prompt([
+                                {
+                                    type: "list",
+                                    name: "departmentId",
+                                    message: 'Which department would you like to remove?',
+                                    choices: departmentChoices
+                                }
+                            ])
+                                .then(res => db.deleteDepartment(res.departmentId))
+                                .then(() => console.log('Department was sucessfully deleted'))
+                                .then(() => mainPrompt())
         })
 }
 
