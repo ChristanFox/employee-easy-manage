@@ -54,6 +54,10 @@ function viewPrompt() {
                 {
                     name: 'View Employees by Department', 
                     value: 'employee_department'
+                },
+                {
+                    name: 'View Departments total budget', 
+                    value: 'department_budget'
                 }
                 ]
         }
@@ -71,6 +75,9 @@ function viewPrompt() {
                 break;
             case 'employee_department':
                 viewByDepartment();
+                break;
+            case 'department_budget':
+                viewDepartmentBudget();
                 break;
         }
     })
@@ -170,6 +177,15 @@ function viewEmployees() {
 
 function viewByDepartment() {
     db.currentEmployees()
+        .then(([rows]) => {
+            let departments = rows;
+            console.table(departments);
+        })
+        .then(() => mainPrompt());
+}
+
+function viewDepartmentBudget() {
+    db.viewDepartmentBudget()
         .then(([rows]) => {
             let departments = rows;
             console.table(departments);

@@ -19,6 +19,12 @@ class companyDB {
         );
     }
 
+    viewDepartmentBudget() {
+        return this.connection.promise().query(
+            'SELECT department.id AS id, department.name AS department, SUM(salary) AS budget FROM  role INNER JOIN department ON role.department_id = department.id GROUP BY  role.department_id;'
+        );
+    }
+
     // Add a new employee
     addEmployee(employee) {
         return this.connection.promise().query(
