@@ -23,7 +23,7 @@ function mainPrompt() {
             case "Create":
                 return createPrompt(false);
             case "Edit":
-                return updatePrompt(false);
+                return editPrompt(false);
             case "Remove":
                 return removePrompt(false);
             case "Quit":
@@ -101,6 +101,36 @@ function createPrompt() {
                 break;
             case 'employee':
                 addEmployee();
+                break;
+        }
+    })
+}
+
+function editPrompt() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'edit_table',
+            message: 'Edit',
+            choices: [
+                {
+                    name: 'Edit Employee Role', 
+                    value: 'edit_role'
+                },
+                {
+                    name: 'Edit Employee Manager', 
+                    value: 'edit_manager'
+                }
+                ]
+        }
+    ]).then(res => {
+        let edit_table = res.edit_table;
+        switch (edit_table) {
+            case 'edit_role':
+                editRole();
+                break;
+            case 'edit_manager':
+                editManager();
                 break;
         }
     })
@@ -238,6 +268,92 @@ function addEmployee() {
                 })
             })
     })   
+}
+
+function editRole() {
+    db.currentEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee's role do you want to update?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => {
+                    let employeeId = res.employeeId;
+                    db.allRoles()
+                        .then(([rows]) => {
+                            let roles = rows;
+                            const roleChoices = roles.map(({ id, title }) => ({
+                                name: title,
+                                value: id
+                            }));
+
+                            inquirer.prompt([
+                                {
+                                    type: "list",
+                                    name: "roleId",
+                                    message: "What's the new role of this employee?",
+                                    choices: roleChoices
+                                }
+                            ])
+                                .then(res => db.editRole(employeeId, res.roleId))
+                                .then(() => console.log("Employee's role is updated"))
+                                .then(() => mainPrompt())
+                        });
+                });
+        })
+}
+
+function editManager() {
+    db.currentEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employeeId',
+                    message: 'Who need their manager updated?',
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => {
+                    let employeeId = res.employeeId;
+                    db.allManagers()
+                        .then(([rows]) => {
+                            let managers = rows;
+                            const managerChoices = managers.map(({ id, title }) => ({
+                                name: title,
+                                value: id
+                            }));
+
+                            inquirer.prompt([
+                                {
+                                    type: 'list',
+                                    name: 'managerId',
+                                    message: 'Who is this employees new manager?',
+                                    choices: managerChoices
+                                }
+                            ])
+                                .then(res => db.editManager(employeeId, res.managerId))
+                                .then(() => console.log('Employee Manager is updated'))
+                                .then(() => mainPrompt())
+                        });
+                });
+        })
 }
 
 init();

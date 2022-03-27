@@ -64,6 +64,22 @@ class companyDB {
             department
         );
     }
+
+    // Update employee role
+    editRole(employeeId, roleId) {
+        return this.connection.promise().query(
+            'UPDATE employee SET role_id = ? WHERE id = ?',
+            [roleId, employeeId]
+        );
+    }
+
+    // Update employee manager
+    editManager(employeeId, managerId) {
+    return this.connection.promise().query(
+        'UPDATE employee SET manager_id = ? WHERE id = ?',
+        [managerId, employeeId]
+        );
+    }
 }
 
 module.exports = new companyDB(connection);
