@@ -331,12 +331,12 @@ function editManager() {
                 }
             ])
                 .then(res => {
-                    let employeeId = res.employeeId;
-                    db.allManagers()
+                    let managerId = res.employeeId;
+                    db.currentEmployees()
                         .then(([rows]) => {
-                            let managers = rows;
-                            const managerChoices = managers.map(({ id, title }) => ({
-                                name: title,
+                            let employees = rows;
+                            const managerChoices = employees.map(({ id, first_name, last_name }) => ({
+                                name: `${first_name} ${last_name}`,
                                 value: id
                             }));
 
@@ -348,7 +348,7 @@ function editManager() {
                                     choices: managerChoices
                                 }
                             ])
-                                .then(res => db.editManager(employeeId, res.managerId))
+                                .then(res => db.editManager(managerId, res.managerId))
                                 .then(() => console.log('Employee Manager is updated'))
                                 .then(() => mainPrompt())
                         });
