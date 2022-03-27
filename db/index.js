@@ -13,12 +13,20 @@ class companyDB {
     }
 
     // Lists all current employees by department
+    viewByManager() {
+        return this.connection.promise().query(
+            'SELECT employee.id, employee.first_name, employee.last_name, CONCAT(manager.first_name, "", manager.last_name) AS manager FROM employee LEFT JOIN employee manager on manager.id = employee.manager_id;'
+        );
+    }
+
+    // Lists all current employees by department
     viewByDepartment() {
         return this.connection.promise().query(
             'SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id;'
         );
     }
 
+    // Lists total budget by department
     viewDepartmentBudget() {
         return this.connection.promise().query(
             'SELECT department.id AS id, department.name AS department, SUM(salary) AS budget FROM  role INNER JOIN department ON role.department_id = department.id GROUP BY  role.department_id;'
