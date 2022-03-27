@@ -16,7 +16,7 @@ VALUES
     ('Lead Engineer', 150000, 2),
     ('Software Engineer', 120000, 2),
     ('Lawyer', 190000, 3),
-    ('Paralegel', 78000, 3),
+    ('Paralegal', 78000, 3),
     ('Account Manager', 160000, 4),
     ('Accountant', 125000, 4);
     

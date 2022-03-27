@@ -14,7 +14,9 @@ class companyDB {
 
     // Add a new employee
     addEmployee(employee) {
-        return this.connection.promise().query('INSERT INTO employee SET ?', employee);
+        return this.connection.promise().query(
+            'INSERT INTO employee SET ?',
+             employee);
     } 
 
     // Remove an employee from the list
