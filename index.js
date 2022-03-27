@@ -264,6 +264,7 @@ function createDepartment() {
             .then(() => mainPrompt())
     })
 }
+
 function createRole() {
     db.allDepartments()
         .then(([rows]) => {
@@ -294,6 +295,7 @@ function createRole() {
             })
         })
 }
+
 function addEmployee() {
     inquirer.prompt([
         {
