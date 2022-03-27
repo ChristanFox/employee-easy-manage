@@ -50,6 +50,10 @@ function viewPrompt() {
                 {
                     name: 'View Employees', 
                     value: 'employee'
+                },
+                {
+                    name: 'View Employees by Department', 
+                    value: 'employee_department'
                 }
                 ]
         }
@@ -64,6 +68,9 @@ function viewPrompt() {
                 break;
             case 'employee':
                 viewEmployees();
+                break;
+            case 'employee_department':
+                viewByDepartment();
                 break;
         }
     })
@@ -153,6 +160,15 @@ function viewRoles() {
         .then(() => mainPrompt());
 }
 function viewEmployees() {
+    db.currentEmployees()
+        .then(([rows]) => {
+            let departments = rows;
+            console.table(departments);
+        })
+        .then(() => mainPrompt());
+}
+
+function viewByDepartment() {
     db.currentEmployees()
         .then(([rows]) => {
             let departments = rows;
