@@ -1,6 +1,4 @@
 const inquirer = require('inquirer');
-const { type } = require('os');
-const { deleteEmployee, deleteRole, deleteDepartment } = require('./db');
 const db = require('./db');
 require('console.table');
 
@@ -442,6 +440,72 @@ function editManager() {
                             ])
                                 .then(res => db.editManager(managerId, res.managerId))
                                 .then(() => console.log('Employee Manager is updated'))
+                                .then(() => mainPrompt())
+                        });
+                });
+        })
+}
+
+function deleteEmployee() {
+    db.currentEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employeeId',
+                    message: 'Which employee is being removed?',
+                    choices: employeeChoices
+                }
+            ])
+            .then(res => db.deleteEmployee(res.employeeId))
+            .then(() => console.log('Employee is removed'))
+            .then(() => mainPrompt())
+    });
+}
+
+function removeRole() {
+    db.currentEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee's role do you want to update?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => {
+                    let employeeId = res.employeeId;
+                    db.allRoles()
+                        .then(([rows]) => {
+                            let roles = rows;
+                            const roleChoices = roles.map(({ id, title }) => ({
+                                name: title,
+                                value: id
+                            }));
+
+                            inquirer.prompt([
+                                {
+                                    type: "list",
+                                    name: "roleId",
+                                    message: "What's the new role of this employee?",
+                                    choices: roleChoices
+                                }
+                            ])
+                                .then(res => db.removeRole(roles, res.roleId))
+                                .then(() => console.log("Employee's role is updated"))
                                 .then(() => mainPrompt())
                         });
                 });
