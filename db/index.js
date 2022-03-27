@@ -22,7 +22,7 @@ class companyDB {
     // Lists all current employees by department
     viewByDepartment() {
         return this.connection.promise().query(
-            'SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id;'
+            'SELECT employee.id, employee.first_name, employee.last_name, department.name AS department FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id;'
         );
     }
 
@@ -37,7 +37,8 @@ class companyDB {
     addEmployee(employee) {
         return this.connection.promise().query(
             'INSERT INTO employee SET ?',
-             employee);
+             employee
+        );
     } 
 
     // Remove an employee from the list
@@ -47,6 +48,23 @@ class companyDB {
             employeeId
         );
     }
+
+    // Remove a department from the list
+    deleteRole(roleId) {
+        return this.connection.promise().query(
+            'DELETE FROM role WHERE id = ?',
+            roleId
+        );
+    }
+
+    // Remove a department from the list
+    deleteDepartment(departmentId) {
+        return this.connection.promise().query(
+            'DELETE FROM department WHERE id = ?',
+            departmentId
+        );
+    }
+    
 
     // List all the managers
     allManagers(employeeId) {

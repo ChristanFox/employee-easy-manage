@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const { type } = require('os');
+const { deleteEmployee, deleteRole, deleteDepartment } = require('./db');
 const db = require('./db');
 require('console.table');
 
@@ -157,6 +158,47 @@ function editPrompt() {
     })
 }
 
+function removePrompt() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'remove_table',
+            message: 'Remove',
+            choices: [
+                {
+                    name: 'Remove Employee', 
+                    value: 'remove_employee'
+                },
+                {
+                    name: 'Remove Role', 
+                    value: 'remove_role'
+                },
+                {
+                    name: 'Remove Department', 
+                    value: 'remove_department'
+                }
+                ]
+        }
+    ]).then(res => {
+        let remove_table = res.remove_table;
+        switch (remove_table) {
+            case 'remove_employee':
+                deleteEmployee();
+                break;
+            case 'remove_role':
+                deleteRole();
+                break;
+            case 'remove_department':
+                deleteDepartment();
+                break;
+        }
+    })
+}
+
+function quitApp() {
+    process.exit();
+}
+
 function viewDepartments() {
     db.allDepartments()
         .then(([rows]) => {
@@ -194,7 +236,7 @@ function viewByManager() {
 }
 
 function viewByDepartment() {
-    db.currentEmployees()
+    db.viewByDepartment()
         .then(([rows]) => {
             let departments = rows;
             console.table(departments);
